@@ -1831,6 +1831,13 @@ typedef enum {
 VIR_ENUM_DECL(virDomainIOAPIC);
 
 /* Operating system configuration data & machine / arch */
+typedef struct _virDomainOSEnv virDomainOSEnv;
+typedef virDomainOSEnv *virDomainOSEnvPtr;
+struct _virDomainOSEnv {
+    char *name;
+    char *value;
+};
+
 typedef struct _virDomainOSDef virDomainOSDef;
 typedef virDomainOSDef *virDomainOSDefPtr;
 struct _virDomainOSDef {
@@ -1844,6 +1851,7 @@ struct _virDomainOSDef {
     bool bm_timeout_set;
     char *init;
     char **initargv;
+    virDomainOSEnvPtr *initenv;
     char *kernel;
     char *initrd;
     char *cmdline;
