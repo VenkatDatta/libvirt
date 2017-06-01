@@ -93,6 +93,7 @@ EXTRA_DIST =		\
 	capabilityschemadata \
 	commanddata \
 	cputestdata \
+	lxcdocker2xmldata \
 	domaincapsschemadata \
 	domainconfdata \
 	domainschemadata \
@@ -295,7 +296,7 @@ test_libraries += libqemumonitortestutils.la \
 endif WITH_QEMU
 
 if WITH_LXC
-test_programs += lxcxml2xmltest lxcconf2xmltest
+test_programs += lxcxml2xmltest lxcconf2xmltest lxcdocker2xmltest
 endif WITH_LXC
 
 if WITH_OPENVZ
@@ -693,6 +694,11 @@ lxcconf2xmltest_SOURCES = \
 	lxcconf2xmltest.c testutilslxc.c testutilslxc.h \
 	testutils.c testutils.h
 lxcconf2xmltest_LDADD = $(lxc_LDADDS)
+
+lxcdocker2xmltest_SOURCES = \
+	lxcdocker2xmltest.c testutilslxc.c testutilslxc.h \
+	testutils.c testutils.h
+lxcdocker2xmltest_LDADD = $(lxc_LDADDS)
 else ! WITH_LXC
 EXTRA_DIST += lxcxml2xmltest.c testutilslxc.c testutilslxc.h
 endif ! WITH_LXC

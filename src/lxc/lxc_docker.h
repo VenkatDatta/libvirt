@@ -1,7 +1,7 @@
 /*
- * lxc_native.h: LXC native configuration import
+ * lxc_docker.h: Header file for LXC Docker configuration
  *
- * Copyright (c) 2013 SUSE LINUX Products GmbH, Nuernberg, Germany.
+ * Copyright (C) 2017 Venkat Datta N H
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,19 +17,16 @@
  * License along with this library.  If not, see
  * <http://www.gnu.org/licenses/>.
  *
- * Author: Cedric Bosdonnat <cbosdonnat@suse.com>
+ * Author: Venkat Datta N H <nhvenkatdatta@gmail.com>
  */
 
-#ifndef __LXC_NATIVE_H__
-# define __LXC_NATIVE_H__
+#ifndef __LXC_DOCKER_H__
+# define __LXC_DOCKER_H__
 
 # include "domain_conf.h"
 
-# define LXC_CONFIG_FORMAT "lxc-tools"
-# define DOCKER_CONFIG_FORMAT "docker"
+virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps,
+                                           virDomainXMLOptionPtr xmlopt,
+                                           const char *config);
 
-virDomainDefPtr lxcParseConfigString(const char *config,
-                                     virCapsPtr caps,
-                                     virDomainXMLOptionPtr xmlopt);
-
-#endif /* __LXC_NATIVE_H__ */
+#endif /* __LXC_DOCKER_H__ */

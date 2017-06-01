@@ -111,6 +111,7 @@ src/lxc/lxc_driver.c
 src/lxc/lxc_fuse.c
 src/lxc/lxc_hostdev.c
 src/lxc/lxc_native.c
+src/lxc/lxc_docker.c
 src/lxc/lxc_process.c
 src/network/bridge_driver.c
 src/network/bridge_driver_linux.c
