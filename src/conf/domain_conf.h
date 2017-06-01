@@ -1852,6 +1852,7 @@ struct _virDomainOSDef {
     char *init;
     char **initargv;
     virDomainOSEnvPtr *initenv;
+    char *initdir;
     char *kernel;
     char *initrd;
     char *cmdline;
