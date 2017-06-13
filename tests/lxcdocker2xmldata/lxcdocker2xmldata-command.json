@@ -1,0 +1,56 @@
+{
+        "Id": "618a2e773b84976ca2736e443a0c98eeeecdcfb2584e3dab1a3cafa313a936da",
+        "Created": "2017-06-07T00:46:07.149971669Z",
+        "Path": "/bin/ping",
+        "Args": [
+            "localhost"
+        ],
+        "HostConfig": {
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "ShmSize": 67108864,
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "MemorySwap": 0,
+            "MemorySwappiness": -1,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumBandwidth": 0
+        },
+        "GraphDriver": {
+            "Name": "aufs",
+            "Data": null
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "618a2e773b84",
+            "Domainname": "",
+            "User": "",
+            "Cmd": [
+                "/bin/ping",
+                "localhost"
+            ],
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        }
+
+}

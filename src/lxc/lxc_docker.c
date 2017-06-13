@@ -74,6 +74,62 @@ static int virLXCDockerParseMem(virDomainDefPtr dom,
     return 0;
 }
 
+struct virLXCDockerCmdArgsIteratorArgs {
+    virDomainDefPtr vmdef;
+    size_t ninitargs;
+};
+
+static int virLXCDockerCmdArgsIterator(size_t pos ATTRIBUTE_UNUSED,
+                                       virJSONValuePtr item,
+                                       void *opaque)
+{
+    struct virLXCDockerCmdArgsIteratorArgs *args = opaque;
+    const char *value = virJSONValueGetString(item);
+
+    if (!args->vmdef->os.init) {
+        if (VIR_STRDUP(args->vmdef->os.init, value) < 0)
+            return -1;
+        else
+            return 1;
+    }
+
+    if (VIR_EXPAND_N(args->vmdef->os.initargv, args->ninitargs, 1) < 0)
+        return -1;
+
+    if (VIR_STRDUP(args->vmdef->os.initargv[args->ninitargs - 1], value) < 0)
+        return -1;
+
+    return 1;
+}
+
+
+static int virLXCDockerBuildInitCmd(virDomainDefPtr vmdef,
+                                    virJSONValuePtr config)
+{
+    virJSONValuePtr entry_point = virJSONValueObjectGetArray(config, "Entrypoint");
+    virJSONValuePtr command = virJSONValueObjectGetArray(config, "Cmd");
+    struct virLXCDockerCmdArgsIteratorArgs iterator_args = { vmdef, 0 };
+
+    if (entry_point && virJSONValueArrayForeachSteal(entry_point,
+                                                     &virLXCDockerCmdArgsIterator,
+                                                     &iterator_args) < 0)
+        goto error;
+
+    if (command && virJSONValueArrayForeachSteal(command,
+                                                 &virLXCDockerCmdArgsIterator,
+                                                 &iterator_args) < 0)
+        goto error;
+
+    /* Append NULL element at the end */
+    if (iterator_args.ninitargs > 0 &&
+        VIR_EXPAND_N(vmdef->os.initargv, iterator_args.ninitargs, 1) < 0)
+        goto error;
+
+    return 0;
+
+ error:
+    return -1;
+}
 
 virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
                                             virDomainXMLOptionPtr xmlopt,
@@ -81,12 +137,11 @@ virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
 {
     virJSONValuePtr json_obj = NULL;
     virJSONValuePtr host_config = NULL;
+    virJSONValuePtr docker_config = NULL;
     virDomainDefPtr def = NULL;
-
 
     if (!(json_obj = virJSONValueFromString(config)))
         return NULL;
-
 
     if (!(def = virDomainDefNew()))
         goto error;
@@ -105,6 +160,14 @@ virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
         if (virLXCDockerParseMem(def, host_config) < 0) {
             virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                            _("failed to parse Memory"));
+            goto error;
+        }
+    }
+
+    if ((docker_config = virJSONValueObjectGetObject(json_obj, "Config")) != NULL) {
+        if (virLXCDockerBuildInitCmd(def, docker_config) < 0) {
+            virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
+                           _("failed to parse Command"));
             goto error;
         }
     }
