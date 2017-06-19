@@ -1,0 +1,18 @@
+<domain type='lxc'>
+  <uuid>c7a5fdbd-edaf-9455-926a-d65c16db1809</uuid>
+  <memory unit='KiB'>0</memory>
+  <currentMemory unit='KiB'>0</currentMemory>
+  <vcpu placement='static'>0</vcpu>
+  <os>
+    <type>exe</type>
+    <init>/bin/bash</init>
+    <initenv name='PATH'>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin</initenv>
+    <initenv name='myhost'>localhost</initenv>
+  </os>
+  <clock offset='utc'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+  </devices>
+</domain>

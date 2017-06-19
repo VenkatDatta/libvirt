@@ -133,6 +133,7 @@ mymain(void)
 
     DO_TEST("simple", false);
     DO_TEST("command", false);
+    DO_TEST("initenv", false);
 
     virObjectUnref(xmlopt);
     virObjectUnref(caps);

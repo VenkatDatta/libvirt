@@ -102,6 +102,40 @@ static int virLXCDockerCmdArgsIterator(size_t pos ATTRIBUTE_UNUSED,
     return 1;
 }
 
+struct virLXCDockerEnvArgsIteratorArgs {
+    virDomainDefPtr vmdef;
+    size_t nenvargs;
+};
+
+static int virLXCDockerEnvArgsIterator(size_t pos ATTRIBUTE_UNUSED,
+                                 virJSONValuePtr item,
+                                 void *opaque)
+{
+    struct virLXCDockerEnvArgsIteratorArgs *args = opaque;
+    const char *env = virJSONValueGetString(item);
+    const char *envValue = strchr(env, '=');
+    char *envName = NULL;
+
+    if (VIR_STRNDUP(envName, env, envValue ? envValue - env : -1) < 0)
+            goto error;
+
+    if (VIR_EXPAND_N(args->vmdef->os.initenv, args->nenvargs, 1) < 0)
+        return -1;
+
+    if (VIR_ALLOC(args->vmdef->os.initenv[args->nenvargs - 1]) < 0)
+                goto error;
+
+    if (VIR_STRDUP(args->vmdef->os.initenv[args->nenvargs - 1]->name, envName) < 0)
+        return -1;
+
+    if (VIR_STRDUP(args->vmdef->os.initenv[args->nenvargs - 1]->value, envValue + 1) < 0)
+        return -1;
+
+    return 1;
+ error:
+    return -1;
+}
+
 
 static int virLXCDockerBuildInitCmd(virDomainDefPtr vmdef,
                                     virJSONValuePtr config)
@@ -129,6 +163,29 @@ static int virLXCDockerBuildInitCmd(virDomainDefPtr vmdef,
 
  error:
     return -1;
+}
+
+static int virLXCDockerBuildEnv(virDomainDefPtr vmdef,
+                                virJSONValuePtr config)
+{
+    virJSONValuePtr env = virJSONValueObjectGetArray(config, "Env");
+    struct virLXCDockerEnvArgsIteratorArgs iterator_args = { vmdef, 0 };
+
+    if (env && virJSONValueArrayForeachSteal(env,
+                                             &virLXCDockerEnvArgsIterator,
+                                             &iterator_args) < 0)
+        goto error;
+
+    /* Append NULL element at the end */
+    if (iterator_args.nenvargs > 0 &&
+        VIR_EXPAND_N(vmdef->os.initenv, iterator_args.nenvargs, 1) < 0)
+        goto error;
+
+    return 0;
+
+ error:
+    return -1;
+
 }
 
 virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
@@ -168,6 +225,10 @@ virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
         if (virLXCDockerBuildInitCmd(def, docker_config) < 0) {
             virReportError(VIR_ERR_INTERNAL_ERROR, "%s",
                            _("failed to parse Command"));
+            goto error;
+        }
+        if (virLXCDockerBuildEnv(def, docker_config) < 0) {
+            virReportError(VIR_ERR_INTERNAL_ERROR, "%s", _("failed to parse Env"));
             goto error;
         }
     }

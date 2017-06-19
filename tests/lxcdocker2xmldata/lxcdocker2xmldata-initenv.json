@@ -1,0 +1,54 @@
+{
+        "Id": "ee1f0eb2989acc2ecf0fbea495b4826047d083c0e9bf776ed7440b99fc9efb28",
+        "Created": "2017-06-18T03:59:29.165351535Z",
+        "Path": "/bin/bash",
+        "Args": [],
+        "Driver": "aufs",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PidMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "CpuPeriod": 0,
+            "CpuQuota": 0
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "ee1f0eb2989a",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "myhost=localhost"
+            ],
+            "Cmd": [
+                "/bin/bash"
+            ],
+            "Image": "image",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        }
+}
