@@ -188,6 +188,17 @@ static int virLXCDockerBuildEnv(virDomainDefPtr vmdef,
 
 }
 
+static int virLXCDockerSetWorkingDirectory(virDomainDefPtr vmdef,
+                                           virJSONValuePtr config)
+{
+    const char *cwd = virJSONValueObjectGetString(config, "WorkingDir");
+
+    if (strcmp(cwd, "") && VIR_STRDUP(vmdef->os.initdir, cwd) < 0)
+        return -1;
+
+    return 0;
+}
+
 virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
                                             virDomainXMLOptionPtr xmlopt,
                                             const char *config)
@@ -229,6 +240,10 @@ virDomainDefPtr virLXCDockerParseJSONConfig(virCapsPtr caps ATTRIBUTE_UNUSED,
         }
         if (virLXCDockerBuildEnv(def, docker_config) < 0) {
             virReportError(VIR_ERR_INTERNAL_ERROR, "%s", _("failed to parse Env"));
+            goto error;
+        }
+        if (virLXCDockerSetWorkingDirectory(def, docker_config) < 0) {
+            virReportError(VIR_ERR_INTERNAL_ERROR, "%s", _("failed to parse WorkingDir"));
             goto error;
         }
     }

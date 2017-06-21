@@ -1,0 +1,51 @@
+{
+        "Id": "cae5be62f300c26bbcc8c675c0f2021b385631c3b40b8f087faf73b9476e623a",
+        "Created": "2017-06-21T02:46:21.644894763Z",
+        "Path": "/bin/bash",
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "CpuShares": 0,
+            "Memory": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DiskQuota": 0,
+            "KernelMemory": 0,
+            "IOMaximumBandwidth": 0
+        },
+        "Config": {
+            "Hostname": "cae5be62f300",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Cmd": [
+                "/bin/bash"
+            ],
+            "Image": "image",
+            "Volumes": null,
+            "WorkingDir": "/usr/bin",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {}
+        }
+}
