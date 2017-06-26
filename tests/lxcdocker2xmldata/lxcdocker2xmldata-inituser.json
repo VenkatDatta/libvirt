@@ -1,7 +1,11 @@
 {
-        "Id": "cae5be62f300c26bbcc8c675c0f2021b385631c3b40b8f087faf73b9476e623a",
-        "Created": "2017-06-21T02:46:21.644894763Z",
-        "Path": "/bin/bash",
+        "Id": "bf3ffac4d485764d19e34e7fa989d92458319039ae0732412ffac140ce545406",
+        "Created": "2017-06-26T14:18:11.116165428Z",
+        "Path": "/bin/sh",
+        "Args": [
+            "-c",
+            "/home/tommy"
+        ],
         "HostConfig": {
             "Binds": null,
             "ContainerIDFile": "",
@@ -11,10 +15,15 @@
             },
             "NetworkMode": "default",
             "PortBindings": {},
-            "RestartPolicy": {
-                "Name": "no",
-                "MaximumRetryCount": 0
-            },
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "Isolation": "",
             "CpuShares": 0,
             "Memory": 0,
             "NanoCpus": 0,
@@ -26,28 +35,32 @@
             "CpusetCpus": "",
             "CpusetMems": "",
             "Devices": [],
-            "DiskQuota": 0,
-            "KernelMemory": 0,
-            "IOMaximumBandwidth": 0
+            "DiskQuota": 0
         },
         "Config": {
-            "Hostname": "cae5be62f300",
+            "Hostname": "bf3ffac4d485",
             "Domainname": "",
-            "User": "",
+            "User": "tommy",
             "AttachStdin": false,
             "AttachStdout": false,
             "AttachStderr": false,
             "Tty": false,
             "OpenStdin": false,
             "StdinOnce": false,
-            "Cmd": [
-                "/bin/bash"
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
             ],
+            "Cmd": null,
             "Image": "image",
             "Volumes": null,
-            "WorkingDir": "/usr/bin",
-            "Entrypoint": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "/bin/sh",
+                "-c",
+                "/home/tommy"
+            ],
             "OnBuild": null,
             "Labels": {}
         }
+
 }
